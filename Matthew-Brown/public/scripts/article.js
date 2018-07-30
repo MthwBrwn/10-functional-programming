@@ -54,9 +54,10 @@ var app = app || {};
 //  as well as the total number of words across all articles written by the specified author.
   Article.numWordsByAuthor = () => {
     return Article.allAuthors().map(author => { 
-      name: author, 
-      numWords: Article.all.filter(call =>call.author === author).map(call => call.body.match(/\b\w+/g).length)
-      .reduce((accum, currVal)=> accum+currVal)
+      return{
+        name: author,
+        numWords: Article.all.filter(call =>call.author === author).map(call => call.body.match(/\b\w+/g).length).reduce((accum, currVal)=> accum+currVal)
+      }
     })
   };
 
@@ -104,5 +105,5 @@ var app = app || {};
       .then(console.log)
       .then(callback);
   };
-  module.Article= Article;
+  module.Article = Article;
 })(app);
