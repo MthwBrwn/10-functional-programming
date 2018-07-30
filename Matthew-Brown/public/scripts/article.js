@@ -28,6 +28,7 @@ var app = app || {};
     Article.all = articleData.map(articleObject => new Article (articleObject));
   };
 
+
   Article.fetchAll = callback => {
     $.get('/articles')
       .then(results => {
@@ -36,14 +37,17 @@ var app = app || {};
       })
   };
 
+  // Chain together a .map() call and a .reduce() call to get a rough count of all words in all articles.
+  
   Article.numWordsAll = () => {
-    return Article.all.map().reduce()
+    return Article.all.map(article => article.body.match(/\b\w+/g).length).reduce((a,b)=>a=b)
   };
 
+  // Chain together a .map() call and a .reduce() call to produce an array of unique author names. You will probably need to use the optional accumulator argument in your reduce call.
   Article.allAuthors = () => {
     return Article.all.map().reduce();
   };
-
+// Transform each author string into an object with properties for the author's name, as well as the total number of words across all articles written by the specified author.
   Article.numWordsByAuthor = () => {
     return Article.allAuthors().map(author => { })
   };
@@ -60,6 +64,7 @@ var app = app || {};
 
   Article.prototype.insertRecord = function(callback) {
     // REVIEW: Why can't we use an arrow function here for .insertRecord()?
+    //arrow functions do not work with the .this 
     $.post('/articles', {author: this.author, author_url: this.author_url, body: this.body, category: this.category, published_on: this.published_on, title: this.title})
       .then(console.log)
       .then(callback);

@@ -131,8 +131,10 @@ var articleView = {};
     articleView.setTeasers();
     $('pre code').each((i, block) => hljs.highlightBlock(block));
   };
-  // Todo : set up function to populate fields on admin 
+  // TODOx: : set up function to populate fields on admin
+  //this attaches to author-template 
   articleView.initAdminPage = () => {
+    var template = Handlebars.compile($('#author-template').text());
     
     // REVIEW: We use .forEach() here because we are relying on the side-effects of the callback function: appending to the DOM. The callback is not required to return anything.
     app.Article.numWordsByAuthor().forEach(stat => $('.author-stats').append(template(stat)));
