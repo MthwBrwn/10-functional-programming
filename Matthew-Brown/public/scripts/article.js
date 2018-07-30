@@ -40,16 +40,24 @@ var app = app || {};
   // Chain together a .map() call and a .reduce() call to get a rough count of all words in all articles.
   
   Article.numWordsAll = () => {
-    return Article.all.map(article => article.body.match(/\b\w+/g).length).reduce((a,b)=>a=b)
+    return Article.all.map(article => article.body.match(/\b\w+/g).length).reduce((accum,currVal)=>accum+currVal)
   };
 
-  // Chain together a .map() call and a .reduce() call to produce an array of unique author names. You will probably need to use the optional accumulator argument in your reduce call.
+  // Chain together a .map() call and a .reduce() call to produce an array of unique author names. 
   Article.allAuthors = () => {
-    return Article.all.map().reduce();
+    return Article.all.map(article => article.author).reduce((names, name) => {
+      if(names.indexOf(name) === -1) names.push(name);
+      return names;
+    }, []);
   };
-// Transform each author string into an object with properties for the author's name, as well as the total number of words across all articles written by the specified author.
+// Transform each author string into an object with properties for the author's name,
+//  as well as the total number of words across all articles written by the specified author.
   Article.numWordsByAuthor = () => {
-    return Article.allAuthors().map(author => { })
+    return Article.allAuthors().map(author => { 
+      name: author, 
+      numWords: Article.all.filter(call =>call.author === author).map(call => call.body.match(/\b\w+/g).length)
+      .reduce((accum, currVal)=> accum+currVal)
+    })
   };
 
   Article.truncateTable = callback => {
